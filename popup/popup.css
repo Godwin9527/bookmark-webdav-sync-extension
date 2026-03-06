@@ -1,0 +1,341 @@
+/* popup.css — 弹出界面样式 */
+
+:root {
+  --bg: #f5f5f5;
+  --card-bg: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #666;
+  --border: #e0e0e0;
+  --primary: #4a90d9;
+  --primary-hover: #357abd;
+  --success: #48b07a;
+  --danger: #e05555;
+  --danger-hover: #c44040;
+  --push-color: #e88a3a;
+  --push-hover: #d07520;
+  --pull-color: #6c8ebf;
+  --pull-hover: #5577a8;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 380px;
+  min-height: 200px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.container {
+  padding: 12px;
+}
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.badge.idle { background: #e8f5e9; color: #2e7d32; }
+.badge.running { background: #fff3e0; color: #e65100; animation: pulse 1.5s infinite; }
+.badge.error { background: #fce4ec; color: #c62828; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #fafafa;
+  border-bottom: 1px solid var(--border);
+  cursor: default;
+  user-select: none;
+}
+
+.card-title .arrow {
+  font-size: 11px;
+  color: var(--text-secondary);
+  transition: transform 0.2s;
+}
+
+.card-title[data-toggle] {
+  cursor: pointer;
+}
+
+.card-title[data-toggle]:hover {
+  background: #f0f0f0;
+}
+
+.card-body {
+  padding: 12px 14px;
+}
+
+.card-body.collapsed {
+  display: none;
+}
+
+/* Fields */
+.field {
+  margin-bottom: 10px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field label,
+.field .label-text {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.field.inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field.inline label,
+.field.inline .label-text {
+  margin-bottom: 0;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary);
+}
+
+.field.inline select {
+  width: auto;
+  min-width: 100px;
+}
+
+.time-value {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Buttons */
+.btn {
+  padding: 7px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+.btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+
+.btn-secondary {
+  background: #eee;
+  color: var(--text);
+}
+.btn-secondary:hover:not(:disabled) { background: #ddd; }
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+.btn-danger:hover:not(:disabled) { background: var(--danger-hover); }
+
+.btn-push {
+  background: var(--push-color);
+  color: white;
+  flex: 1;
+}
+.btn-push:hover:not(:disabled) { background: var(--push-hover); }
+
+.btn-pull {
+  background: var(--pull-color);
+  color: white;
+  flex: 1;
+}
+.btn-pull:hover:not(:disabled) { background: var(--pull-hover); }
+
+.btn-block {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+}
+.btn-block:hover:not(:disabled) { background: var(--primary-hover); }
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.icon {
+  font-size: 12px;
+}
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #ccc;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+  background: var(--success);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(16px);
+}
+
+/* Status Messages */
+.status-msg {
+  margin-top: 8px;
+  font-size: 12px;
+  min-height: 16px;
+}
+.status-msg.success { color: var(--success); }
+.status-msg.error { color: var(--danger); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  background: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 100;
+}
+.toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(10px);
+}
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger); }
+
+/* Confirm Overlay */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+.overlay.hidden { display: none; }
+
+.confirm-dialog {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-dialog p {
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>书签同步</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>书签 WebDAV 同步</h1>
+      <div id="statusBadge" class="badge idle">空闲</div>
+    </header>
+
+    <!-- 连接设置 -->
+    <section class="card">
+      <h2 class="card-title" data-toggle="connectionSection">
+        <span>连接设置</span>
+        <span class="arrow">▾</span>
+      </h2>
+      <div id="connectionSection" class="card-body">
+        <div class="field">
+          <label for="webdavUrl">WebDAV 地址</label>
+          <input type="url" id="webdavUrl" placeholder="https://example.com/dav/">
+        </div>
+        <div class="field">
+          <label for="username">用户名</label>
+          <input type="text" id="username" placeholder="用户名">
+        </div>
+        <div class="field">
+          <label for="password">密码</label>
+          <input type="password" id="password" placeholder="密码">
+        </div>
+        <div class="field">
+          <label for="storagePath">存储路径</label>
+          <input type="text" id="storagePath" placeholder="/bookmark-sync/">
+        </div>
+        <div class="btn-row">
+          <button id="btnTestConnection" class="btn btn-secondary">测试连接</button>
+          <button id="btnSaveSettings" class="btn btn-primary">保存设置</button>
+        </div>
+        <div id="connectionStatus" class="status-msg"></div>
+      </div>
+    </section>
+
+    <!-- 单向备份 -->
+    <section class="card">
+      <h2 class="card-title">
+        <span>单向备份</span>
+        <label class="switch">
+          <input type="checkbox" id="backupEnabled">
+          <span class="slider"></span>
+        </label>
+      </h2>
+      <div class="card-body">
+        <div class="field inline">
+          <label for="backupInterval">备份间隔</label>
+          <select id="backupInterval">
+            <option value="15">15 分钟</option>
+            <option value="30">30 分钟</option>
+            <option value="60" selected>1 小时</option>
+            <option value="120">2 小时</option>
+            <option value="360">6 小时</option>
+            <option value="720">12 小时</option>
+            <option value="1440">24 小时</option>
+          </select>
+        </div>
+        <div class="field inline">
+          <span class="label-text">上次备份</span>
+          <span id="lastBackupTime" class="time-value">从未</span>
+        </div>
+        <button id="btnBackupNow" class="btn btn-block">立即备份</button>
+      </div>
+    </section>
+
+    <!-- 双向同步 -->
+    <section class="card">
+      <h2 class="card-title">
+        <span>双向同步</span>
+        <label class="switch">
+          <input type="checkbox" id="syncEnabled">
+          <span class="slider"></span>
+        </label>
+      </h2>
+      <div class="card-body">
+        <div class="field inline">
+          <label for="syncInterval">同步间隔</label>
+          <select id="syncInterval">
+            <option value="15">15 分钟</option>
+            <option value="30" selected>30 分钟</option>
+            <option value="60">1 小时</option>
+            <option value="120">2 小时</option>
+            <option value="360">6 小时</option>
+            <option value="720">12 小时</option>
+            <option value="1440">24 小时</option>
+          </select>
+        </div>
+        <div class="field inline">
+          <span class="label-text">上次同步</span>
+          <span id="lastSyncTime" class="time-value">从未</span>
+        </div>
+        <button id="btnSyncNow" class="btn btn-block">立即同步</button>
+      </div>
+    </section>
+
+    <!-- 手动操作 -->
+    <section class="card">
+      <h2 class="card-title"><span>手动操作</span></h2>
+      <div class="card-body">
+        <div class="btn-row">
+          <button id="btnPush" class="btn btn-push">
+            <span class="icon">&#x2B06;</span> 推送到云端
+          </button>
+          <button id="btnPull" class="btn btn-pull">
+            <span class="icon">&#x2B07;</span> 从云端拉取
+          </button>
+        </div>
+        <div class="field inline">
+          <span class="label-text">上次推送</span>
+          <span id="lastPushTime" class="time-value">从未</span>
+        </div>
+        <div class="field inline">
+          <span class="label-text">上次拉取</span>
+          <span id="lastPullTime" class="time-value">从未</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 操作反馈 -->
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <!-- 确认对话框 -->
+  <div id="confirmOverlay" class="overlay hidden">
+    <div class="confirm-dialog">
+      <p id="confirmMessage"></p>
+      <div class="btn-row">
+        <button id="confirmCancel" class="btn btn-secondary">取消</button>
+        <button id="confirmOk" class="btn btn-danger">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
