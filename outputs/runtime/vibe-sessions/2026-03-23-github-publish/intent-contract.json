@@ -1,0 +1,31 @@
+{
+  "goal": "将当前浏览器扩展项目上传到 GitHub，并补充项目说明文档",
+  "deliverable": [
+    "公开 GitHub 仓库",
+    "README.md",
+    "origin 远程配置",
+    "运行回执文件"
+  ],
+  "constraints": [
+    "使用已登录账号 Godwin9527",
+    "仓库名采用推荐值 bookmark-webdav-sync-extension",
+    "仓库可见性为 Public",
+    "不修改核心功能代码"
+  ],
+  "acceptanceCriteria": [
+    "仓库创建成功",
+    "代码成功推送",
+    "README 内容完整且与项目一致",
+    "向用户返回仓库链接"
+  ],
+  "nonGoals": [
+    "Chrome Web Store 发布",
+    "功能重构",
+    "补充真实截图"
+  ],
+  "autonomyMode": "interactive_governed",
+  "inferredAssumptions": [
+    "当前目录内容可公开上传",
+    "以 master 分支推送可接受"
+  ]
+}
