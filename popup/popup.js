@@ -15,6 +15,7 @@ const els = {
 
   // 备份
   backupEnabled: $('backupEnabled'),
+  bookmarkChangeBackupEnabled: $('bookmarkChangeBackupEnabled'),
   backupInterval: $('backupInterval'),
   lastBackupTime: $('lastBackupTime'),
   btnBackupNow: $('btnBackupNow'),
@@ -146,6 +147,7 @@ async function loadStatus() {
   }
 
   els.backupEnabled.checked = settings.backupEnabled || false;
+  els.bookmarkChangeBackupEnabled.checked = settings.bookmarkChangeBackupEnabled !== false;
   els.backupInterval.value = String(settings.backupIntervalMinutes || 60);
   els.syncEnabled.checked = settings.syncEnabled || false;
   els.syncInterval.value = String(settings.syncIntervalMinutes || 30);
@@ -214,6 +216,7 @@ els.btnSaveSettings.addEventListener('click', async () => {
     password: pwd,
     storagePath: els.storagePath.value.trim() || '/bookmark-sync/',
     backupEnabled: els.backupEnabled.checked,
+    bookmarkChangeBackupEnabled: els.bookmarkChangeBackupEnabled.checked,
     backupIntervalMinutes: parseInt(els.backupInterval.value),
     syncEnabled: els.syncEnabled.checked,
     syncIntervalMinutes: parseInt(els.syncInterval.value),
@@ -241,6 +244,7 @@ els.password.addEventListener('input', () => {
 
 // 开关变更时自动保存
 els.backupEnabled.addEventListener('change', saveToggles);
+els.bookmarkChangeBackupEnabled.addEventListener('change', saveToggles);
 els.syncEnabled.addEventListener('change', saveToggles);
 els.backupInterval.addEventListener('change', saveToggles);
 els.syncInterval.addEventListener('change', saveToggles);
@@ -250,6 +254,7 @@ async function saveToggles() {
   const fullSettings = await sendMessage({ action: 'getSettings' });
 
   fullSettings.backupEnabled = els.backupEnabled.checked;
+  fullSettings.bookmarkChangeBackupEnabled = els.bookmarkChangeBackupEnabled.checked;
   fullSettings.backupIntervalMinutes = parseInt(els.backupInterval.value);
   fullSettings.syncEnabled = els.syncEnabled.checked;
   fullSettings.syncIntervalMinutes = parseInt(els.syncInterval.value);

@@ -29,7 +29,7 @@ let bookmarkImporting = false;
 async function scheduleBookmarkChangeBackup() {
   const settings = await Storage.getSettings();
   const configured =
-    settings.backupEnabled &&
+    settings.bookmarkChangeBackupEnabled &&
     settings.webdavUrl &&
     settings.username &&
     settings.password;
@@ -123,7 +123,7 @@ async function ensureAlarms() {
   const settings = await Storage.getSettings();
 
   const bookmarkChangeConfigured =
-    settings.backupEnabled &&
+    settings.bookmarkChangeBackupEnabled &&
     settings.webdavUrl &&
     settings.username &&
     settings.password;
