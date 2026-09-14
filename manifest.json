@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Bookmark WebDAV Sync",
+  "name": "9527-书签同步-Bookmark WebDAV Sync",
   "version": "1.0.0",
   "description": "通过 WebDAV 同步 Chrome 书签，支持单向备份与双向同步。",
   "permissions": [
