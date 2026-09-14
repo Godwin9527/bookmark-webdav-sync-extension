@@ -14,7 +14,52 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   } else if (alarm.name === 'bookmark-sync') {
     const result = await SyncEngine.twoWaySync();
     console.log('[BookmarkSync] 自动同步:', result.message);
+  } else if (alarm.name === BOOKMARK_CHANGE_BACKUP_ALARM) {
+    const result = await SyncEngine.oneWayBackup();
+    console.log('[BookmarkSync] 书签变化后自动备份:', result.message);
   }
+});
+
+// ——— 书签变化触发的自动备份 ———
+
+const BOOKMARK_CHANGE_BACKUP_ALARM = 'bookmark-change-backup';
+const BOOKMARK_BACKUP_DEBOUNCE_MS = 15 * 1000;
+let bookmarkImporting = false;
+
+async function scheduleBookmarkChangeBackup() {
+  const settings = await Storage.getSettings();
+  const configured =
+    settings.backupEnabled &&
+    settings.webdavUrl &&
+    settings.username &&
+    settings.password;
+  if (!configured) {
+    await chrome.alarms.clear(BOOKMARK_CHANGE_BACKUP_ALARM);
+    return;
+  }
+
+  await chrome.alarms.clear(BOOKMARK_CHANGE_BACKUP_ALARM);
+  await chrome.alarms.create(BOOKMARK_CHANGE_BACKUP_ALARM, {
+    when: Date.now() + BOOKMARK_BACKUP_DEBOUNCE_MS,
+  });
+}
+
+function onBookmarkChanged() {
+  if (bookmarkImporting) return;
+  void scheduleBookmarkChangeBackup();
+}
+
+chrome.bookmarks.onCreated.addListener(onBookmarkChanged);
+chrome.bookmarks.onChanged.addListener(onBookmarkChanged);
+chrome.bookmarks.onMoved.addListener(onBookmarkChanged);
+chrome.bookmarks.onChildrenReordered.addListener(onBookmarkChanged);
+chrome.bookmarks.onRemoved.addListener(onBookmarkChanged);
+chrome.bookmarks.onImportBegan.addListener(() => {
+  bookmarkImporting = true;
+});
+chrome.bookmarks.onImportEnded.addListener(() => {
+  bookmarkImporting = false;
+  onBookmarkChanged();
 });
 
 // ——— 消息处理（popup ↔ background 通信）———
@@ -77,6 +122,15 @@ async function handleMessage(message) {
 async function ensureAlarms() {
   const settings = await Storage.getSettings();
 
+  const bookmarkChangeConfigured =
+    settings.backupEnabled &&
+    settings.webdavUrl &&
+    settings.username &&
+    settings.password;
+  if (!bookmarkChangeConfigured) {
+    await chrome.alarms.clear(BOOKMARK_CHANGE_BACKUP_ALARM);
+  }
+
   // 单向备份定时器
   if (settings.backupEnabled) {
     const existing = await chrome.alarms.get('bookmark-backup');
@@ -117,7 +171,6 @@ async function init() {
 
   // 崩溃恢复
   await SyncEngine.recoverPending();
-
   // 确保定时器正确
   await ensureAlarms();
 }
