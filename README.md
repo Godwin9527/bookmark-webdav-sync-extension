@@ -35,7 +35,7 @@
 ## 工作方式
 
 ### 1. 单向备份
-读取本地 Chrome 书签树，序列化后写入 WebDAV 目录下的 `bookmarks.json`。
+读取本地 Chrome 书签树，先保存为带时间戳的 `bookmarks-backup-YYYY-MM-DD-HH-MM-SS-SSS.json` 历史快照，并更新 `bookmarks.json` 作为最新快照。
 
 ### 2. 双向同步
 - 读取本地书签树
